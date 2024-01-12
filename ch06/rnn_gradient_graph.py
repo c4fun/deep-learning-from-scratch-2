@@ -3,16 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-N = 2  # ミニバッチサイズ
-H = 3  # 隠れ状態ベクトルの次元数
-T = 20  # 時系列データの長さ
+N = 2  # mini-batch的大小
+H = 3  # 隐藏层的向量的维数
+T = 20  # 时序数据的长度
 
 dh = np.ones((N, H))
 
-np.random.seed(3)
+np.random.seed(3)  # 为了复现，设定随机数的种子
 
-Wh = np.random.randn(H, H)
-#Wh = np.random.randn(H, H) * 0.5
+# Wh = np.random.randn(H, H)
+Wh = np.random.randn(H, H) * 0.5
 
 norm_list = []
 for t in range(T):
@@ -22,7 +22,7 @@ for t in range(T):
 
 print(norm_list)
 
-# グラフの描画
+# 画图
 plt.plot(np.arange(len(norm_list)), norm_list)
 plt.xticks([0, 4, 9, 14, 19], [1, 5, 10, 15, 20])
 plt.xlabel('time step')

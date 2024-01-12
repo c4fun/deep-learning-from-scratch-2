@@ -1,5 +1,6 @@
 # coding: utf-8
 import sys
+import pickle
 sys.path.append('..')
 from common.time_layers import *
 from common.base_model import BaseModel
@@ -10,7 +11,7 @@ class Rnnlm(BaseModel):
         V, D, H = vocab_size, wordvec_size, hidden_size
         rn = np.random.randn
 
-        # 重みの初期化
+        # Init weight
         embed_W = (rn(V, D) / 100).astype('f')
         lstm_Wx = (rn(D, 4 * H) / np.sqrt(D)).astype('f')
         lstm_Wh = (rn(H, 4 * H) / np.sqrt(H)).astype('f')
@@ -18,7 +19,7 @@ class Rnnlm(BaseModel):
         affine_W = (rn(H, V) / np.sqrt(H)).astype('f')
         affine_b = np.zeros(V).astype('f')
 
-        # レイヤの生成
+        # Generate layers
         self.layers = [
             TimeEmbedding(embed_W),
             TimeLSTM(lstm_Wx, lstm_Wh, lstm_b, stateful=True),
@@ -27,7 +28,7 @@ class Rnnlm(BaseModel):
         self.loss_layer = TimeSoftmaxWithLoss()
         self.lstm_layer = self.layers[1]
 
-        # すべての重みと勾配をリストにまとめる
+        # Gather all weights and gradients
         self.params, self.grads = [], []
         for layer in self.layers:
             self.params += layer.params
@@ -51,3 +52,11 @@ class Rnnlm(BaseModel):
 
     def reset_state(self):
         self.lstm_layer.reset_state()
+
+    def save_params(self, file_name='Rnnlm.pkl'):
+        with open(file_name, 'wb') as f:
+            pickle.dump(self.params, f)
+
+    def load_params(self, file_name='Rnnlm.pkl'):
+        with open(file_name, 'rb') as f:
+            self.params = pickle.load(f)

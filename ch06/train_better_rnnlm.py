@@ -2,7 +2,7 @@
 import sys
 sys.path.append('..')
 from common import config
-# GPUで実行する場合は下記のコメントアウトを消去（要cupy）
+# 在用GPU运行时，请打开下面的注释（需要cupy）
 # ==============================================
 # config.GPU = True
 # ==============================================
@@ -13,7 +13,7 @@ from dataset import ptb
 from better_rnnlm import BetterRnnlm
 
 
-# ハイパーパラメータの設定
+# hyper paramerts
 batch_size = 20
 wordvec_size = 650
 hidden_size = 650
@@ -23,7 +23,7 @@ max_epoch = 40
 max_grad = 0.25
 dropout = 0.5
 
-# 学習データの読み込み
+# Load training data and segment them by training, validation and test
 corpus, word_to_id, id_to_word = ptb.load_data('train')
 corpus_val, _, _ = ptb.load_data('val')
 corpus_test, _, _ = ptb.load_data('test')
@@ -61,7 +61,7 @@ for epoch in range(max_epoch):
     print('-' * 50)
 
 
-# テストデータでの評価
+# perplexity evaluation on test data
 model.reset_state()
 ppl_test = eval_perplexity(model, corpus_test)
 print('test perplexity: ', ppl_test)

@@ -8,8 +8,8 @@ from common.base_model import BaseModel
 
 class BetterRnnlm(BaseModel):
     '''
-     LSTMレイヤを2層利用し、各層にDropoutを使うモデル
-     [1]で提案されたモデルをベースとし、weight tying[2][3]を利用
+    使用了LSTM的2层网络，并且每层都使用了Dropout的模型
+    Embedding层和全连接层共享了权重
 
      [1] Recurrent Neural Network Regularization (https://arxiv.org/abs/1409.2329)
      [2] Using the Output Embedding to Improve Language Models (https://arxiv.org/abs/1608.05859)
