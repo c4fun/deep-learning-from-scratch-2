@@ -10,25 +10,25 @@ class CBOW:
     def __init__(self, vocab_size, hidden_size, window_size, corpus):
         V, H = vocab_size, hidden_size
 
-        # 重みの初期化
+        # 初始化权重
         W_in = 0.01 * np.random.randn(V, H).astype('f')
         W_out = 0.01 * np.random.randn(V, H).astype('f')
 
-        # レイヤの生成
+        # 生成层
         self.in_layers = []
         for i in range(2 * window_size):
-            layer = Embedding(W_in)  # Embeddingレイヤを使用
+            layer = Embedding(W_in)  # Embedding层的使用
             self.in_layers.append(layer)
         self.ns_loss = NegativeSamplingLoss(W_out, corpus, power=0.75, sample_size=5)
 
-        # すべての重みと勾配をリストにまとめる
+        # 将所有的权重和梯度整合到一个列表中
         layers = self.in_layers + [self.ns_loss]
         self.params, self.grads = [], []
         for layer in layers:
             self.params += layer.params
             self.grads += layer.grads
 
-        # メンバ変数に単語の分散表現を設定
+        # 将单词的分布式表示设定为成员变量
         self.word_vecs = W_in
 
     def forward(self, contexts, target):

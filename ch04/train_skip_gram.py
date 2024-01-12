@@ -3,7 +3,6 @@ import sys
 sys.path.append('..')
 from common import config
 # 在用GPU运行时，请打开下面的注释（需要cupy）
-# 这个GPU的方法没有调通，跟cupy的版本有关系，暂时不用GPU
 # ===============================================
 # config.GPU = True
 # ===============================================
@@ -32,8 +31,8 @@ if config.GPU:
     contexts, target = to_gpu(contexts), to_gpu(target)
 
 # 模型生成
-model = CBOW(vocab_size, hidden_size, window_size, corpus)
-# model = SkipGram(vocab_size, hidden_size, window_size, corpus)
+# model = CBOW(vocab_size, hidden_size, window_size, corpus)
+model = SkipGram(vocab_size, hidden_size, window_size, corpus)
 optimizer = Adam()
 trainer = Trainer(model, optimizer)
 
@@ -46,9 +45,9 @@ word_vecs = model.word_vecs
 if config.GPU:
     word_vecs = to_cpu(word_vecs)
 params = {}
-params['word_vecs'] = word_vecs.astype(np.float32)
+params['word_vecs'] = word_vecs.astype(np.float16)
 params['word_to_id'] = word_to_id
 params['id_to_word'] = id_to_word
-pkl_file = 'cbow_params.pkl'  # or 'skipgram_params.pkl'
+pkl_file = 'skip_gram_params.pkl'  # or 'skipgram_params.pkl'
 with open(pkl_file, 'wb') as f:
     pickle.dump(params, f, -1)
