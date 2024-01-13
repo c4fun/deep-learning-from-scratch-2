@@ -53,10 +53,10 @@ class AttentionWeight:
         N, T, H = hs.shape
 
         ds = self.softmax.backward(da)
-        dt = ds.reshape(N, T, 1).repeat(H, axis=2)
+        dt = ds.reshape(N, T, 1).repeat(H, axis=2)  # sum backpropagation
         dhs = dt * hr
         dhr = dt * hs
-        dh = np.sum(dhr, axis=1)
+        dh = np.sum(dhr, axis=1)  # repeat backpropagation
 
         return dhs, dh
 
