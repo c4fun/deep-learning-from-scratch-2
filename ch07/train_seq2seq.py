@@ -11,17 +11,17 @@ from seq2seq import Seq2seq
 from peeky_seq2seq import PeekySeq2seq
 
 
-# データセットの読み込み
+# Load dataset ===================================================
 (x_train, t_train), (x_test, t_test) = sequence.load_data('addition.txt')
 char_to_id, id_to_char = sequence.get_vocab()
 
 # Reverse input? =================================================
-is_reverse = False  # True
+is_reverse = True  # True
 if is_reverse:
     x_train, x_test = x_train[:, ::-1], x_test[:, ::-1]
 # ================================================================
 
-# ハイパーパラメータの設定
+# Set hyperparameters ============================================
 vocab_size = len(char_to_id)
 wordvec_size = 16
 hidden_size = 128
@@ -30,8 +30,8 @@ max_epoch = 25
 max_grad = 5.0
 
 # Normal or Peeky? ==============================================
-model = Seq2seq(vocab_size, wordvec_size, hidden_size)
-# model = PeekySeq2seq(vocab_size, wordvec_size, hidden_size)
+# model = Seq2seq(vocab_size, wordvec_size, hidden_size)
+model = PeekySeq2seq(vocab_size, wordvec_size, hidden_size)
 # ================================================================
 optimizer = Adam()
 trainer = Trainer(model, optimizer)
@@ -52,7 +52,7 @@ for epoch in range(max_epoch):
     acc_list.append(acc)
     print('val acc %.3f%%' % (acc * 100))
 
-# グラフの描画
+# Plotting
 x = np.arange(len(acc_list))
 plt.plot(x, acc_list, marker='o')
 plt.xlabel('epochs')

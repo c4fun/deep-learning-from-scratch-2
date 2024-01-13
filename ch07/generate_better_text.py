@@ -14,7 +14,7 @@ corpus_size = len(corpus)
 model = BetterRnnlmGen()
 model.load_params('../ch06/BetterRnnlm.pkl')
 
-# start文字とskip文字の設定
+# start文字 and skip文字の設定
 start_word = 'you'
 start_id = word_to_id[start_word]
 skip_words = ['N', '<unk>', '$']

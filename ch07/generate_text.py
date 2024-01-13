@@ -12,7 +12,7 @@ corpus_size = len(corpus)
 model = RnnlmGen()
 model.load_params('../ch06/Rnnlm.pkl')
 
-# start文字とskip文字の設定
+# Setting up start words and skip words
 start_word = 'you'
 start_id = word_to_id[start_word]
 skip_words = ['N', '<unk>', '$']
